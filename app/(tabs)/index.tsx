@@ -3,13 +3,10 @@ import { Text, TextInput, Pressable, Alert, SafeAreaView, View, StyleSheet, Moda
 import { MaterialIcons } from '@expo/vector-icons';
 import TaskList from '@/components/TaskList';
 
-
 export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
-  const [number, setNumber] = useState<string>('');
   const [tasks, setTasks] = useState<{ text: string; completed: boolean }[]>([]);
-
 
   const addTask = () => {
     if (text) {
@@ -21,7 +18,7 @@ export default function HomeScreen() {
     }
   };
 
-  const deleteTask = (taskToDelete:string)=>{
+  const deleteTask = (taskToDelete: string) => {
     setTasks(tasks.filter(task => task.text !== taskToDelete));
   };
 
@@ -48,8 +45,13 @@ export default function HomeScreen() {
             Alert.alert('Modal has been closed.');
             setModalVisible(!modalVisible);
           }}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
+          <Pressable style={styles.centeredView} onPress={() => setModalVisible(false)}>
+            <View style={styles.modalView} pointerEvents="box-none">
+              <Pressable
+                style={styles.closeStyle}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <MaterialIcons name="close" size={30} color="#fff" />
+              </Pressable>
               <Text style={styles.modalText}>Tarefa</Text>
               <SafeAreaView>
                 <TextInput
@@ -58,26 +60,14 @@ export default function HomeScreen() {
                   value={text}
                   placeholder="Enter task"
                 />
-                <TextInput
-                  style={styles.input}
-                  onChangeText={setNumber}
-                  value={number}
-                  placeholder="Numeric input"
-                  keyboardType="numeric"
-                />
               </SafeAreaView>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={addTask}>
-                <Text style={styles.textStyle}>Add Task</Text>
-              </Pressable>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}>
-                <Text style={styles.textStyle}>Hide Modal</Text>
+                <Text style={styles.textStyle}>Adicionar Tarefa</Text>
               </Pressable>
             </View>
-          </View>
+          </Pressable>
         </Modal>
         <Pressable
           style={[styles.button, styles.buttonOpen]}
@@ -89,7 +79,6 @@ export default function HomeScreen() {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -98,16 +87,20 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 50,
   },
+  modal: {
+    position: 'relative'
+  },
   input: {
     height: 40,
-    margin: 12,
+    margin: 16,
+    borderRadius: 20,
     borderWidth: 1,
     padding: 10,
   },
   baseText: {
     textAlign: 'center',
     fontSize: 30,
-    padding:20,
+    padding: 20,
     fontWeight: 'bold',
   },
   centeredView: {
@@ -115,6 +108,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
+  },
+  closeStyle: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 999,
+    backgroundColor: '#2196F3',
+    borderRadius: 20,
+    padding: 5,
   },
   modalView: {
     margin: 20,
@@ -146,6 +148,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+    padding: 10,
   },
   modalText: {
     marginBottom: 15,

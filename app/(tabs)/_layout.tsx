@@ -1,10 +1,24 @@
-import { Stack } from 'expo-router';
-import React from 'react';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Tabs, Stack } from 'expo-router';
 
-export default function RootLayout() {
+export default function TabLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-    </Stack>
+
+    <Tabs screenOptions={{ tabBarActiveTintColor: 'blue', headerShown: false } }>
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Início',
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: 'Histórico',
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="book" color={color} />,
+        }}
+      />
+    </Tabs>
   );
 }
